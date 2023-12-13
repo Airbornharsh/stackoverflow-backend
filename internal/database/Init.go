@@ -1,6 +1,18 @@
 package database
 
-import "github.com/joho/godotenv"
+import (
+	"database/sql"
+	"os"
+
+	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+)
+
+var (
+	DB *gorm.DB
+)
 
 func INIT() {
 	dotenv := godotenv.Load(".env")
@@ -9,10 +21,19 @@ func INIT() {
 		panic("Error loading .env file")
 	}
 
-	// Connect to database
-	// db, err := gorm.Open("mysql", "user:password@/dbname?charset=utf8&parseTime=True&loc=Local")
-	// if err != nil {
-	// 	panic("failed to connect database")
-	// }
-	// defer db.Close()
+	DB_URI := os.Getenv("DB_URI")
+
+	sqlDB, err := sql.Open("postgres", DB_URI)
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	gormDB, err := gorm.Open(postgres.New(postgres.Config{
+		Conn: sqlDB,
+	}), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	DB = gormDB
 }

@@ -23,5 +23,5 @@ func main() {
 		c.JSON(200, gin.H{"message": "Hello World"})
 	})
 
-	r.Run() //
+	r.Run() 
 }
