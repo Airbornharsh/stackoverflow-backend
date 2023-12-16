@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/airbornharsh/stackoverflow-backend/internal/database"
+	"github.com/airbornharsh/stackoverflow-backend/pkg/routes"
 	"github.com/gin-gonic/gin"
 )
 
@@ -23,5 +24,7 @@ func main() {
 		c.JSON(200, gin.H{"message": "Hello World"})
 	})
 
-	r.Run() 
+	routes.RoutesInit(api)
+
+	r.Run()
 }
